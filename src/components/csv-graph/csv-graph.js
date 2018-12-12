@@ -19,10 +19,33 @@ class CsvGraph extends Component {
         });
     }
 
+    handleNew = () => {
+        console.log('adding new')
+    }
+
     render() {
         return (
             <div>
-                <button onClick={() => {console.log(this.state)}}>Log</button>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>First Name</th>
+                            <th>Last Name</th>
+                            <th>Occasion</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {this.state.data.map(point => (
+                            <tr key={point.occasion}>
+                                <td>{point.first_name}</td>
+                                <td>{point.last_name}</td>
+                                <td>{point.occasion}</td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+                <button onClick={this.handleNew}>New</button>
+                <button onClick={() => { console.log(this.state) }}>Log</button>
             </div>
         );
     }
