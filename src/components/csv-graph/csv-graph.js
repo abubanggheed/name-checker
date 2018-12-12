@@ -1,38 +1,26 @@
 import React, { Component } from 'react';
-import * as d3 from 'd3';
 
 class CsvGraph extends Component {
 
     state = {
         data: [],
-        upload: "/data.csv",
     }
 
 
-    setData = path => {
+    setData = rawText => {
         this.setState({
             ...this.state,
             data: [],
         });
-        d3.csv(path, point => {
-            this.setState({
-                ...this.state,
-                data: [...this.state.data, {
-                    first_name: point["first name"],
-                    last_name: point["last name"],
-                    occasion: point["occasion id"],
-                    role: point["role"],
-                }]
-            });
-        });
+        console.log(rawText);
     }
 
     handleUpload = event => {
-        this.setState({
-            ...this.state,
-            upload: event.target.value
-        })
-        this.setData(this.state.upload)
+        let reader = new FileReader();
+        reader.onload = event => {
+            this.setData(event.target.result);
+        }
+        reader.readAsText(event.target.files[0]);
     }
 
     render() {
