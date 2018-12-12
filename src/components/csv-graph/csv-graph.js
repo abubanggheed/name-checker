@@ -4,15 +4,40 @@ class CsvGraph extends Component {
 
     state = {
         data: [],
+        headers: [],
+        title: "data will be shown below"
     }
 
 
     setData = rawText => {
+        let rows = rawText.split('\n').filter(content =>
+            content
+        );
+        let headersToAdd = rows[0].split(',');
+        let dataTitle = "data";
+        let dataStart = 1;
+        let dataToSet = [];
+        if (headersToAdd.length === 1) {
+            dataTitle = headersToAdd[0];
+            headersToAdd = rows[1].split(',');
+            dataStart = 2;
+        }
+        let dataItem = {}
+        let rowData = [];
+        for (let i = dataStart; i < rows.length; i++) {
+            dataItem = {}
+            rowData = rows[i].split(',');
+            for (let j = 0; j < rowData.length; j++) {
+                dataItem[headersToAdd[j]] = rowData[j];
+            }
+            dataToSet.push(dataItem);
+        }
         this.setState({
             ...this.state,
-            data: [],
+            data: dataToSet,
+            headers: headersToAdd,
+            title: dataTitle,
         });
-        console.log(rawText);
     }
 
     handleUpload = event => {
@@ -24,24 +49,26 @@ class CsvGraph extends Component {
     }
 
     render() {
+        let tHeaders = this.state.headers;
         return (
             <div>
+                <h2>{this.state.title}</h2>
                 <table>
                     <thead>
                         <tr>
-                            <th>First Name</th>
-                            <th>Last Name</th>
-                            <th>Occasion</th>
-                            <th>Role</th>
+                            {tHeaders.map(header => (
+                                <td key={header}>{header}</td>
+                            ))}
                         </tr>
                     </thead>
                     <tbody>
                         {this.state.data.map(point => (
-                            <tr key={point.first_name + point.last_name + point.occasion}>
-                                <td>{point.first_name}</td>
-                                <td>{point.last_name}</td>
-                                <td>{point.occasion}</td>
-                                <td>{point.role}</td>
+                            <tr key={tHeaders.reduce((prev, current) => (
+                                prev + point[current]
+                            ), '')}>
+                                {tHeaders.map(header => (
+                                    <td key={header}>{point[header]}</td>
+                                ))}
                             </tr>
                         ))}
                     </tbody>

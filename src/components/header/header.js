@@ -3,7 +3,7 @@ import React from 'react';
 const Header = () => {
     return (
         <header>
-            <h1>Name Checker</h1>
+            <h1>CSV Checker</h1>
         </header>
     );
 }
