@@ -1,5 +1,8 @@
-### Name Checker
+# Name Checker
 The purpose of this project is to interact with a list of names and find last names that match. That said, this application needs to check for approximate matches as well as exact matches.
+
+### Notice
+The premise behind this project is currently impossible. Browsers currently block all writing in local files, making it impossible for this application to write into a locally stored spreadsheet. I will not be working on this project until, I can find a work around, and will likely be moving it to a different format.
 
 ## Database
 This project is for a client who for various reasons cannot have it deployed on any server. Thus the "database" of names is held on a spreadsheet, and javascript is used to read and write into this spreadsheet. It is meant to be held on a computer and opened locally, not over the web.
