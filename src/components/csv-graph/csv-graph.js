@@ -29,6 +29,7 @@ class CsvGraph extends Component {
             rowData = rows[i].split(',');
             for (let j = 0; j < rowData.length; j++) {
                 dataItem[headersToAdd[j]] = rowData[j];
+                dataItem.rowId = i + 1;
             }
             dataToSet.push(dataItem);
         }
@@ -53,9 +54,10 @@ class CsvGraph extends Component {
         return (
             <div style={{overflowX: "auto"}}>
                 <h2>{this.state.title}</h2>
-                <table>
+                {this.state.data.length > 0 && <table>
                     <thead>
                         <tr>
+                            <th>Row</th>
                             {tHeaders.map(header => (
                                 <th key={header}>{header}</th>
                             ))}
@@ -63,16 +65,15 @@ class CsvGraph extends Component {
                     </thead>
                     <tbody>
                         {this.state.data.map(point => (
-                            <tr key={tHeaders.reduce((prev, current) => (
-                                prev + point[current]
-                            ), '')}>
+                            <tr key={point.rowId}>
+                                <td>{point.rowId}</td>
                                 {tHeaders.map(header => (
                                     <td key={header}>{point[header]}</td>
                                 ))}
                             </tr>
                         ))}
                     </tbody>
-                </table>
+                </table>}
                 <button onClick={() => { console.log(this.state) }}>Log</button>
                 <input type="file" filename={this.state.upload} onChange={this.handleUpload} />
             </div>
