@@ -51,13 +51,13 @@ class CsvGraph extends Component {
     render() {
         let tHeaders = this.state.headers;
         return (
-            <div>
+            <div style={{overflowX: "auto"}}>
                 <h2>{this.state.title}</h2>
                 <table>
                     <thead>
                         <tr>
                             {tHeaders.map(header => (
-                                <td key={header}>{header}</td>
+                                <th key={header}>{header}</th>
                             ))}
                         </tr>
                     </thead>
