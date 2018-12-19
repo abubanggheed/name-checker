@@ -5,7 +5,8 @@ class CsvGraph extends Component {
     state = {
         data: [],
         headers: [],
-        title: "data will be shown below"
+        title: "data will be shown below",
+        filters: {},
     }
 
 
@@ -39,6 +40,15 @@ class CsvGraph extends Component {
             headers: headersToAdd,
             title: dataTitle,
         });
+        for(let header of this.state.headers) {
+            this.setState({
+                ...this.state,
+                filters: {
+                    ...this.state.filters,
+                    ['header=' + header]: '',
+                }
+            });
+        }
     }
 
     handleUpload = event => {
@@ -49,13 +59,35 @@ class CsvGraph extends Component {
         reader.readAsText(event.target.files[0]);
     }
 
+    handleChangeFor = (header) => event => {
+        this.setState({
+            ...this.state,
+            filters: {
+                ...this.state.filters,
+                ['header=' + header]: event.target.value,
+            }
+        });
+        console.log(this.state.filters);
+    }
+
     render() {
         let tHeaders = this.state.headers;
         return (
-            <div style={{overflowX: "auto"}}>
+            <div style={{ overflowX: "auto" }}>
                 <h2>{this.state.title}</h2>
                 {this.state.data.length > 0 && <table>
                     <thead>
+                        <tr>
+                            <th>Filter</th>
+                            {tHeaders.map(header => (
+                                <th key={header}>
+                                    <input
+                                    onChange={this.handleChangeFor(header)}
+                                    value={this.state.filters['header='+header]}
+                                    />
+                                </th>
+                            ))}
+                        </tr>
                         <tr>
                             <th>Row</th>
                             {tHeaders.map(header => (
@@ -64,7 +96,13 @@ class CsvGraph extends Component {
                         </tr>
                     </thead>
                     <tbody>
-                        {this.state.data.map(point => (
+                        {this.state.data
+                        .filter(dataPoint => tHeaders
+                            .reduce((current, header) => (
+                                current && dataPoint[header]
+                                .includes(this.state.filters['header=' + header])
+                            ), true))
+                        .map(point => (
                             <tr key={point.rowId}>
                                 <td>{point.rowId}</td>
                                 {tHeaders.map(header => (
