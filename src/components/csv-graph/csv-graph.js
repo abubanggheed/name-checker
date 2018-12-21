@@ -40,15 +40,6 @@ class CsvGraph extends Component {
             headers: headersToAdd,
             title: dataTitle,
         });
-        for(let header of this.state.headers) {
-            this.setState({
-                ...this.state,
-                filters: {
-                    ...this.state.filters,
-                    ['header=' + header]: '',
-                }
-            });
-        }
     }
 
     handleUpload = event => {
@@ -67,7 +58,13 @@ class CsvGraph extends Component {
                 ['header=' + header]: event.target.value,
             }
         });
-        console.log(this.state.filters);
+    }
+
+    clearFilters = () => {
+        this.setState({
+            ...this.state,
+            filters: {},
+        });
     }
 
     render() {
@@ -78,38 +75,42 @@ class CsvGraph extends Component {
                 {this.state.data.length > 0 && <table>
                     <thead>
                         <tr>
-                            <th>Filter</th>
-                            {tHeaders.map(header => (
-                                <th key={header}>
-                                    <input
-                                    onChange={this.handleChangeFor(header)}
-                                    value={this.state.filters['header='+header]}
-                                    />
-                                </th>
-                            ))}
-                        </tr>
-                        <tr>
                             <th>Row</th>
                             {tHeaders.map(header => (
                                 <th key={header}>{header}</th>
                             ))}
+                            <th>Actions</th>
+                        </tr>
+                        <tr>
+                            <th>Filter</th>
+                            {tHeaders.map(header => (
+                                <th key={header}>
+                                    <input
+                                        onChange={this.handleChangeFor(header)}
+                                        value={this.state.filters['header=' + header] || ''}
+                                    />
+                                </th>
+                            ))}
+                            <th>
+                                <button onClick={this.clearFilters}>Clear</button>
+                            </th>
                         </tr>
                     </thead>
                     <tbody>
                         {this.state.data
-                        .filter(dataPoint => tHeaders
-                            .reduce((current, header) => (
-                                current && dataPoint[header]
-                                .includes(this.state.filters['header=' + header])
-                            ), true))
-                        .map(point => (
-                            <tr key={point.rowId}>
-                                <td>{point.rowId}</td>
-                                {tHeaders.map(header => (
-                                    <td key={header}>{point[header]}</td>
-                                ))}
-                            </tr>
-                        ))}
+                            .filter(dataPoint => tHeaders
+                                .reduce((current, header) => (
+                                    current && dataPoint[header]
+                                        .includes(this.state.filters['header=' + header] || '')
+                                ), true))
+                            .map(point => (
+                                <tr key={point.rowId}>
+                                    <td>{point.rowId}</td>
+                                    {tHeaders.map(header => (
+                                        <td key={header}>{point[header]}</td>
+                                    ))}
+                                </tr>
+                            ))}
                     </tbody>
                 </table>}
                 <button onClick={() => { console.log(this.state) }}>Log</button>
