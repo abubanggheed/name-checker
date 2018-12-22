@@ -67,6 +67,14 @@ class CsvGraph extends Component {
         });
     }
 
+    handleEdit = dataPoint => () => {
+        console.log(dataPoint);
+    }
+
+    handleDownload = () => {
+        console.log('downloading');
+    }
+
     render() {
         let tHeaders = this.state.headers;
         return (
@@ -109,12 +117,20 @@ class CsvGraph extends Component {
                                     {tHeaders.map(header => (
                                         <td key={header}>{point[header]}</td>
                                     ))}
+                                    <td>
+                                        <button onClick={this.handleEdit(point)}>Edit</button>
+                                    </td>
                                 </tr>
                             ))}
                     </tbody>
                 </table>}
-                <button onClick={() => { console.log(this.state) }}>Log</button>
-                <input type="file" filename={this.state.upload} onChange={this.handleUpload} />
+                <pre>
+                    <button onClick={() => { console.log(this.state) }}>Log</button>
+                    <input type="file" filename={this.state.upload} onChange={this.handleUpload} />
+                </pre>
+                {this.state.data.length > 0 && <pre>
+                    <button onClick={this.handleDownload}>Download CSV</button>
+                </pre>}
             </div>
         );
     }
