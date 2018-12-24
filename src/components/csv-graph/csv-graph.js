@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import EditDialog from './editDialog';
 
 class CsvGraph extends Component {
 
@@ -7,6 +8,8 @@ class CsvGraph extends Component {
         headers: [],
         title: "data will be shown below",
         filters: {},
+        editRow: -1,
+        editPoint: {},
     }
 
 
@@ -69,6 +72,19 @@ class CsvGraph extends Component {
 
     handleEdit = dataPoint => () => {
         console.log(dataPoint);
+        this.setState({
+            ...this.state,
+            editRow: dataPoint.rowId,
+            editPoint: dataPoint,
+        });
+    }
+
+    cancelEdit = () => {
+        this.setState({
+            ...this.state,
+            editRow: -1,
+            editPoint: {},
+        });
     }
 
     handleDownload = () => {
@@ -131,6 +147,11 @@ class CsvGraph extends Component {
                 {this.state.data.length > 0 && <pre>
                     <button onClick={this.handleDownload}>Download CSV</button>
                 </pre>}
+                <EditDialog
+                    row={this.state.editRow}
+                    headers={this.state.headers}
+                    cancelEdit={this.cancelEdit}
+                />
             </div>
         );
     }

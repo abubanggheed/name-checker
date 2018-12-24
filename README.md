@@ -15,4 +15,4 @@ Once finished, build with
 ```
 npm run build
 ```
-Then I suggest you move the html out of the public folder and into the root so that the user doesn't have to dig to find it. This may seem like there are unnecessary steps, but for future use, this project is built assuming a web based version will eventually be made.
+Then I suggest you rename the build folder to something of your choice, and put it somewhere else so that the user doesn't have to dig to find it. This may seem like there are unnecessary steps, but for future use, this project is built assuming a web based version will eventually be made.
