@@ -71,7 +71,6 @@ class CsvGraph extends Component {
     }
 
     handleEdit = dataPoint => () => {
-        console.log(dataPoint);
         this.setState({
             ...this.state,
             editRow: dataPoint.rowId,
@@ -151,6 +150,7 @@ class CsvGraph extends Component {
                     row={this.state.editRow}
                     headers={this.state.headers}
                     cancelEdit={this.cancelEdit}
+                    dataPoint={this.state.editPoint}
                 />
             </div>
         );
