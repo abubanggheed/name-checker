@@ -86,6 +86,18 @@ class CsvGraph extends Component {
         });
     }
 
+    commitChanges = newRow => () => {
+        this.setState({
+            ...this.state,
+            data: this.state.data.map( point => (
+                point.rowId === newRow.rowId ? newRow : point
+            )),
+            editRow: -1,
+            editPoint: {},
+        });        
+
+    }
+
     handleDownload = () => {
         console.log('downloading');
     }
@@ -151,6 +163,7 @@ class CsvGraph extends Component {
                     headers={this.state.headers}
                     cancelEdit={this.cancelEdit}
                     dataPoint={this.state.editPoint}
+                    commitChanges={this.commitChanges}
                 />
             </div>
         );

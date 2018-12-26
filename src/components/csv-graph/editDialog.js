@@ -6,7 +6,7 @@ class EditDialog extends Component {
 
   componentWillReceiveProps (props) {
       this.setState({
-        ...JSON.parse(JSON.stringify(props.dataPoint))
+        ...props.dataPoint
       });
   }
 
@@ -26,6 +26,7 @@ class EditDialog extends Component {
             .map(header => <pre key={header}><label>{header + ': '}
               <input name={header} onChange={this.handleChangeFor(header)} value={this.state[header] || ''} />
             </label></pre>)}
+            <button onClick={this.props.commitChanges(this.state)}>Commit</button>
             <button onClick={this.props.cancelEdit}>Close</button>
         </dialog>
       </div>
