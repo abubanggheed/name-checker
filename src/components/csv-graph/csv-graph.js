@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import EditDialog from './editDialog';
+import DownloadButton from './downloadButton';
 
 class CsvGraph extends Component {
 
@@ -89,17 +90,13 @@ class CsvGraph extends Component {
     commitChanges = newRow => () => {
         this.setState({
             ...this.state,
-            data: this.state.data.map( point => (
+            data: this.state.data.map(point => (
                 point.rowId === newRow.rowId ? newRow : point
             )),
             editRow: -1,
             editPoint: {},
-        });        
+        });
 
-    }
-
-    handleDownload = () => {
-        console.log('downloading');
     }
 
     render() {
@@ -107,6 +104,11 @@ class CsvGraph extends Component {
         return (
             <div style={{ overflowX: "auto" }}>
                 <h2>{this.state.title}</h2>
+                {this.state.data.length > 0 && <pre>
+                    <DownloadButton
+                        toParse={this.state}
+                    />
+                </pre>}
                 {this.state.data.length > 0 && <table>
                     <thead>
                         <tr>
@@ -155,9 +157,6 @@ class CsvGraph extends Component {
                     <button onClick={() => { console.log(this.state) }}>Log</button>
                     <input type="file" filename={this.state.upload} onChange={this.handleUpload} />
                 </pre>
-                {this.state.data.length > 0 && <pre>
-                    <button onClick={this.handleDownload}>Download CSV</button>
-                </pre>}
                 <EditDialog
                     row={this.state.editRow}
                     headers={this.state.headers}
