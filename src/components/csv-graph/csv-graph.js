@@ -87,7 +87,8 @@ class CsvGraph extends Component {
         });
     }
 
-    commitChanges = newRow => () => {
+    commitChanges = newRow => event => {
+        event.preventDefault();
         this.setState({
             ...this.state,
             data: this.state.data.map(point => (
@@ -104,12 +105,12 @@ class CsvGraph extends Component {
         return (
             <div style={{ overflowX: "auto" }}>
                 <h2>{this.state.title}</h2>
-                {this.state.data.length > 0 && <pre>
+                {this.state.data.length > 0 && this.state.editRow < 0 && <pre>
                     <DownloadButton
                         toParse={this.state}
                     />
                 </pre>}
-                {this.state.data.length > 0 && <table>
+                {this.state.data.length > 0 && this.state.editRow < 0 &&<table>
                     <thead>
                         <tr>
                             <th>Row</th>
@@ -155,7 +156,7 @@ class CsvGraph extends Component {
                 </table>}
                 <pre>
                     <button onClick={() => { console.log(this.state) }}>Log</button>
-                    <input type="file" filename={this.state.upload} onChange={this.handleUpload} />
+                    {!this.state.data.length && <input type="file" filename={this.state.upload} onChange={this.handleUpload} />}
                 </pre>
                 <EditDialog
                     row={this.state.editRow}

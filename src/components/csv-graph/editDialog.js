@@ -4,10 +4,10 @@ class EditDialog extends Component {
 
   state = {}
 
-  componentWillReceiveProps (props) {
-      this.setState({
-        ...props.dataPoint
-      });
+  componentWillReceiveProps(props) {
+    this.setState({
+      ...props.dataPoint
+    });
   }
 
   handleChangeFor = header => event => {
@@ -22,12 +22,16 @@ class EditDialog extends Component {
     return (
       <div>
         <dialog open={this.props.row > 0}>
-          {this.props.headers
-            .map(header => <pre key={header}><label>{header + ': '}
-              <input name={header} onChange={this.handleChangeFor(header)} value={this.state[header] || ''} />
-            </label></pre>)}
-            <button onClick={this.props.commitChanges(this.state)}>Commit</button>
+          <form onSubmit={this.props.commitChanges(this.state)}>
+            {this.props.headers
+              .map(header => <pre key={header}><label>{header + ': '}
+                <input name={header} onChange={this.handleChangeFor(header)} value={this.state[header] || ''} />
+              </label></pre>)}
+            <input type="submit" value="Commit" />
+          </form>
+          <pre>
             <button onClick={this.props.cancelEdit}>Close</button>
+          </pre>
         </dialog>
       </div>
     )
