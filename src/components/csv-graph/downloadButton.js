@@ -9,13 +9,11 @@ const handleDownload = objectToParse => () => {
   objectToParse.data.forEach(element => {
     let toAdd = '';
     objectToParse.headers.forEach((header, index) => {
-      toAdd += element[header] + (index + 1 < objectToParse.headers.length ? ',': '');
+      toAdd += element[header] + ((index + 1) < objectToParse.headers.length ? ',': '');
     });
     csvContent += toAdd + '\r\n';
   });
-  console.log('exporting CSV', csvContent);
   let uriEncoding = encodeURI(csvContent);
-  console.log(uriEncoding);
   let link = document.createElement('a');
   link.setAttribute('href', uriEncoding);
   link.setAttribute('download', 'data.csv');

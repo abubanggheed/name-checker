@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import EditDialog from './editDialog';
 import DownloadButton from './downloadButton';
+import AddDialog from './addDialog';
 
 class CsvGraph extends Component {
 
@@ -11,6 +12,7 @@ class CsvGraph extends Component {
         filters: {},
         editRow: -1,
         editPoint: {},
+        add: false,
     }
 
 
@@ -100,6 +102,19 @@ class CsvGraph extends Component {
 
     }
 
+    handleAdd = toAdd => event => {
+        event.preventDefault();
+        console.log(toAdd);
+        this.addDialogSwitch();
+    }
+
+    addDialogSwitch = () => {
+        this.setState({
+            ...this.state,
+            add: !this.state.add,
+        });
+    }
+
     render() {
         let tHeaders = this.state.headers;
         return (
@@ -108,6 +123,15 @@ class CsvGraph extends Component {
                 {this.state.data.length > 0 && this.state.editRow < 0 && <pre>
                     <DownloadButton
                         toParse={this.state}
+                    />
+                    {!this.state.add && <button onClick={this.addDialogSwitch}>
+                        Add Row
+                    </button>}
+                    <AddDialog
+                        add={this.state.add}
+                        handleAdd={this.handleAdd}
+                        headers={this.state.headers}
+                        dialogSwitch={this.addDialogSwitch}
                     />
                 </pre>}
                 {this.state.data.length > 0 && this.state.editRow < 0 &&<table>
