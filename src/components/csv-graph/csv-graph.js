@@ -104,8 +104,18 @@ class CsvGraph extends Component {
 
     handleAdd = toAdd => event => {
         event.preventDefault();
-        console.log(toAdd);
-        this.addDialogSwitch();
+        let currentData = this.state.data;
+        this.setState({
+            ...this.state,
+            add: false,
+            data: [
+                ...currentData,
+                {
+                    ...toAdd,
+                    rowId: currentData[currentData.length - 1].rowId + 1,
+                }
+            ]
+        })
     }
 
     addDialogSwitch = () => {
@@ -134,7 +144,7 @@ class CsvGraph extends Component {
                         dialogSwitch={this.addDialogSwitch}
                     />
                 </pre>}
-                {this.state.data.length > 0 && this.state.editRow < 0 &&<table>
+                {this.state.data.length > 0 && this.state.editRow < 0 && <table>
                     <thead>
                         <tr>
                             <th>Row</th>
