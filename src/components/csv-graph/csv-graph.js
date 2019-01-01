@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import EditDialog from './editDialog';
 import DownloadButton from './downloadButton';
 import AddDialog from './addDialog';
+import ConfirmDelete from './confirmDelete';
 
 class CsvGraph extends Component {
 
@@ -13,6 +14,8 @@ class CsvGraph extends Component {
         editRow: -1,
         editPoint: {},
         add: false,
+        confirmDelete: false,
+        deleteTarget: {},
     }
 
 
@@ -125,6 +128,37 @@ class CsvGraph extends Component {
         });
     }
 
+    targetDelete = row => () => {
+        this.setState({
+            ...this.state,
+            deleteTarget: row,
+            confirmDelete: true,
+        });
+    }
+
+    handleCancelDelete = () => {
+        this.setState({
+            ...this.state,
+            confirmDelete: false,
+        });
+    }
+
+    handleDelete = row => () => {
+        this.setState({
+            ...this.state,
+            confirmDelete: false,
+            data:
+                this.state.data.filter(dataPoint => (dataPoint.rowId !== row.rowId))
+                    .map(dataPoint => (
+                        dataPoint.rowId < row.rowId ? dataPoint :
+                            {
+                                ...dataPoint,
+                                rowId: dataPoint.rowId - 1,
+                            })
+                    ),
+        })
+    }
+
     render() {
         let tHeaders = this.state.headers;
         return (
@@ -144,6 +178,12 @@ class CsvGraph extends Component {
                         dialogSwitch={this.addDialogSwitch}
                     />
                 </pre>}
+                {this.state.confirmDelete && <ConfirmDelete
+                    open={this.state.confirmDelete}
+                    handleDelete={this.handleDelete}
+                    cancelDelete={this.handleCancelDelete}
+                    currentRow={this.state.deleteTarget}
+                />}
                 {this.state.data.length > 0 && this.state.editRow < 0 && <table>
                     <thead>
                         <tr>
@@ -183,6 +223,7 @@ class CsvGraph extends Component {
                                     ))}
                                     <td>
                                         <button onClick={this.handleEdit(point)}>Edit</button>
+                                        <button onClick={this.targetDelete(point)}>Delete</button>
                                     </td>
                                 </tr>
                             ))}
