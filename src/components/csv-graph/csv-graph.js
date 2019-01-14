@@ -230,7 +230,6 @@ class CsvGraph extends Component {
                     </tbody>
                 </table>}
                 <pre>
-                    <button onClick={() => { console.log(this.state) }}>Log</button>
                     {!this.state.data.length && <input type="file" filename={this.state.upload} onChange={this.handleUpload} />}
                 </pre>
                 <EditDialog

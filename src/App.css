@@ -16,5 +16,17 @@ td, th {
 }
 
 tr:nth-child(even) {
-  background-color: honeydew;
+  background-color: azure;
+}
+
+button {
+  padding: 0.7em;
+  border-radius: 10px;
+  background-color: blueviolet;
+  color: azure;
+  margin: 3px;
+}
+
+button:hover {
+  background-color: darkorchid;
 }
